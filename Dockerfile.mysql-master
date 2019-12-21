@@ -1,0 +1,5 @@
+FROM mysql:5.5
+
+RUN echo "log-bin=mysql-bin\nserver-id=1" >> /etc/mysql/my.cnf
+
+COPY ./create_user.sql /docker-entrypoint-initdb.d/
