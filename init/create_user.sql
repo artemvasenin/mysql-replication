@@ -1,0 +1,2 @@
+GRANT REPLICATION SLAVE ON *.* TO 'replication'@'%' IDENTIFIED BY 'password' REQUIRE SSL;
+

@@ -1,5 +1,15 @@
 FROM mysql:5.5
 
-RUN echo "log-bin=mysql-bin\nserver-id=1" >> /etc/mysql/my.cnf
+RUN echo ' \
+log-bin=mysql-bin \n\
+server-id=1 \n\
+ssl-ca=/etc/mysql/certs/ca-cert.pem \n\
+ssl-cert=/etc/mysql/certs/server-cert.pem \n\
+ssl-key=/etc/mysql/certs/server-key.pem \
+' >> /etc/mysql/my.cnf
 
-COPY ./create_user.sql /docker-entrypoint-initdb.d/
+COPY ./init/create_user.sql /docker-entrypoint-initdb.d/
+
+COPY ./certs/ca-cert.pem ./certs/server-cert.pem ./certs/server-key.pem /etc/mysql/certs/
+
+RUN chown mysql /etc/mysql/certs/*.pem

@@ -1,5 +1,12 @@
 FROM mysql:5.5
 
-RUN echo "server-id=2" >> /etc/mysql/my.cnf
+RUN echo ' \
+log-bin=mysql-bin \n\
+server-id=2 \n\
+' >> /etc/mysql/my.cnf
 
-COPY ./change_master.sh /docker-entrypoint-initdb.d/
+COPY ./init/change_master.sh /docker-entrypoint-initdb.d/
+
+COPY ./certs/ca-cert.pem ./certs/client-cert.pem ./certs/client-key.pem /etc/mysql/certs/
+
+RUN chown mysql /etc/mysql/certs/*.pem
